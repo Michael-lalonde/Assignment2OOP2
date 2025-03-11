@@ -1,0 +1,90 @@
+﻿@page "/flights"
+@inject Assignment2OOP2.FlightManager FlightManager
+
+<h1>Flight Finder</h1>
+
+<div class="form-group">
+    <label>From:</label>
+    <select class="form-select" @bind="SelectedOrigin">
+        <option value="Any">Any</option>
+        @foreach (var airport in FlightManager.Airports)
+        {
+            <option value="@airport.Key">@airport.Value</option>
+        }
+    </select>
+</div>
+
+<div class="form-group">
+    <label>To:</label>
+    <select class="form-select" @bind="SelectedDestination">
+        <option value="Any">Any</option>
+        @foreach (var airport in FlightManager.Airports)
+        {
+            <option value="@airport.Key">@airport.Value</option>
+        }
+    </select>
+</div>
+
+<div class="form-group">
+    <label>Day:</label>
+    <select class="form-select" @bind="SelectedDay">
+        <option value="Any">Any</option>
+        <option>Monday</option>
+        <option>Tuesday</option>
+        <option>Wednesday</option>
+        <option>Thursday</option>
+        <option>Friday</option>
+        <option>Saturday</option>
+        <option>Sunday</option>
+    </select>
+</div>
+
+<button class="btn btn-primary" @onclick="SearchFlights">Search</button>
+
+@if (IsLoading)
+{
+    <p>Loading...</p>
+}
+else if (MatchingFlights.Any())
+{
+    <h2>Results</h2>
+    <ul class="list-group">
+        @foreach (var flight in MatchingFlights)
+        {
+            <li class="list-group-item">
+                <strong>@flight.FlightCode</strong> - @flight.Airline
+                <br>
+                @FlightManager.GetAirportName(flight.Origin) → @FlightManager.GetAirportName(flight.Destination)
+                <br>
+                @flight.DayOfWeek at @flight.DepartureTime
+                <br>
+                Seats: @flight.SeatsAvailable | Cost: @flight.Cost.ToString("C")
+            </li>
+        }
+    </ul>
+}
+else if (!string.IsNullOrEmpty(SearchedTerm))
+{
+    <p>No flights found.</p>
+}
+
+@code {
+    private string SelectedOrigin = "Any";
+    private string SelectedDestination = "Any";
+    private string SelectedDay = "Any";
+    private List<Flight> MatchingFlights = new();
+    private bool IsLoading = false;
+    private string SearchedTerm = "";
+
+    private async Task SearchFlights()
+    {
+        IsLoading = true;
+        SearchedTerm = $"{SelectedOrigin}-{SelectedDestination}-{SelectedDay}";
+        MatchingFlights = FlightManager.FindFlights(
+            SelectedOrigin == "Any" ? "Any" : SelectedOrigin,
+            SelectedDestination == "Any" ? "Any" : SelectedDestination,
+            SelectedDay == "Any" ? "Any" : SelectedDay
+        );
+        IsLoading = false;
+    }
+}
