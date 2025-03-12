@@ -16,8 +16,13 @@ namespace Assignment2OOP2
         private void LoadFlights()
         {
             var assembly = typeof(FlightManager).Assembly;
-            var stream = assembly.GetManifestResourceStream("Assignment2OOP2.Resources.flights.csv");
-            if (stream == null) return; 
+            var resourceName = "Assignment2OOP2.Resources.flights.csv"; // Match your namespace
+
+            using var stream = assembly.GetManifestResourceStream(resourceName);
+            if (stream == null)
+            {
+                throw new FileNotFoundException($"Resource '{resourceName}' not found.");
+            }
 
             using var reader = new StreamReader(stream);
             while (!reader.EndOfStream)
@@ -46,8 +51,13 @@ namespace Assignment2OOP2
         private void LoadAirports()
         {
             var assembly = typeof(FlightManager).Assembly;
-            var stream = assembly.GetManifestResourceStream("Assignment2OOP2.Resources.airports.csv");
-            if (stream == null) return; 
+            var resourceName = "Assignment2OOP2.Resources.airports.csv"; // Match your namespace
+
+            using var stream = assembly.GetManifestResourceStream(resourceName);
+            if (stream == null)
+            {
+                throw new FileNotFoundException($"Resource '{resourceName}' not found.");
+            }
 
             using var reader = new StreamReader(stream);
             while (!reader.EndOfStream)
@@ -63,17 +73,6 @@ namespace Assignment2OOP2
             }
         }
 
-        public List<Flight> FindFlights(string origin, string destination, string dayOfWeek)
-        {
-            return Flights
-                .Where(f =>
-                    (origin == "Any" || f.Origin == origin) &&
-                    (destination == "Any" || f.Destination == destination) &&
-                    (dayOfWeek == "Any" || f.DayOfWeek == dayOfWeek))
-                .ToList();
-        }
-
-        public string GetAirportName(string code) => Airports.GetValueOrDefault(code, code);
+        
     }
 }
-
