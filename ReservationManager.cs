@@ -12,22 +12,31 @@ namespace Assignment2OOP2
 
         public void ModifyReservation(List<Reservation> reservations)
         {
-            //Display reservation info
-            
-            Console.WriteLine("Please enter which you would like to edit (1 , 2, 3)");
+            reservations.ToString();
+            Console.WriteLine("Please enter which you would like to edit (5 , 6, or 7)");
             string selection = Console.ReadLine();
 
             foreach (Reservation reservation in reservations)
             {
-
-                if (selection == "1")
+                if (selection == "5")
                 {
                     Console.WriteLine("Please enter new client name: ");
-                    string newclientName = Console.ReadLine();
-
+                    string newClientName = Console.ReadLine();
+                    reservation.Name = newClientName;
+                }
+                else if (selection == "6")
+                {
+                    Console.WriteLine("Please enter new client citizenship: ");
+                    string newClientCitizenship = Console.ReadLine();
+                    reservation.Citizenship = newClientCitizenship;
+                }
+                else if (selection == "7")
+                {
+                    Console.WriteLine("Please enter new client status: ");
+                    string newClientStatus = Console.ReadLine();
+                    reservation.Status = newClientStatus;
                 }
             }
-            
         }
     }
 }
