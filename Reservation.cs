@@ -16,7 +16,7 @@ namespace Assignment2OOP2
         private string Citizenship { get; set; }
         private string Status { get; set; }
 
-        public Reservation(string ReservationCode, string FlightCode, string AirlineName, double Cost, string Name, string Citizenship, string Status) 
+        public Reservation(string ReservationCode, string FlightCode, string AirlineName, double Cost, string Name, string Citizenship, string Status)
         {
             this.ReservationCode = ReservationCode;
             this.FlightCode = FlightCode;
@@ -26,28 +26,15 @@ namespace Assignment2OOP2
             this.Citizenship = Citizenship;
             this.Status = Status;
         }
-    }
-
-}
-        public string reservationCode { get; set; }
-        public object ReservationCode { get; internal set; }
-        public double flightCode { get; set; }
-        public string airlineName { get; set; }
-        public double Cost { get; set; }
-        public string Name { get; set; }
-        public string Citizenship { get; set; }
-        public string Status { get; set; }
-
-
-        public string ToString()
+        public override string ToString()
         {
-            return $"1. Reservation Code: {reservationCode}" +
-                   $"2. Flight Code: {flightCode}" +
-                   $"3. Airline Name: {airlineName}" +
-                   $"4. Cost: {Cost}" +
-                   $"5. Client Name: {Name}" +
-                   $"6. Citizenship {Citizenship}" +
+            return $"1. Reservation Code: {ReservationCode}\n" +
+                   $"2. Flight Code: {FlightCode}\n" +
+                   $"3. Airline Name: {AirlineName}\n" +
+                   $"4. Cost: {Cost}\n" +
+                   $"5. Client Name: {Name}\n" +
+                   $"6. Citizenship: {Citizenship}\n" +
                    $"7. Status: {Status}";
         }
-    }   
+    }
 }
