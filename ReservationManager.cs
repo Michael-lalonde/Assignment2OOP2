@@ -22,7 +22,7 @@ namespace Assignment2OOP2
                 {
                     Console.WriteLine("Please enter new client name: ");
                     string newClientName = Console.ReadLine();
-                    reservation.Name = newClientName;
+                    reservation.PassengerName = newClientName;
                 }
                 else if (selection == "6")
                 {

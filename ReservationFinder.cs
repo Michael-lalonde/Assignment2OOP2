@@ -31,7 +31,7 @@ public class ReservationFinder
     {
         return Reservations.FindAll(r =>
             (string.IsNullOrEmpty(code) || r.ReservationCode.Equals(code, StringComparison.OrdinalIgnoreCase)) &&
-            (string.IsNullOrEmpty(airline) || r.Flight.Airline.Contains(airline, StringComparison.OrdinalIgnoreCase)) &&
+            (string.IsNullOrEmpty(airline) || r.FlightCode.Contains(airline, StringComparison.OrdinalIgnoreCase)) &&
             (string.IsNullOrEmpty(name) || r.PassengerName.Contains(name, StringComparison.OrdinalIgnoreCase))
         );
     }
