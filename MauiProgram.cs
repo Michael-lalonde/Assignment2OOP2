@@ -21,7 +21,7 @@ public static class MauiProgram
         builder.Logging.AddDebug();
 #endif
 
-        // Register FlightManager as a singleton service
+   
         builder.Services.AddSingleton<FlightManager>();
 
         return builder.Build();
