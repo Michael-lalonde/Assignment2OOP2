@@ -2,78 +2,50 @@
 
 namespace Assignment2OOP2
 {
-    public class FlightManager
+    public static class FlightManager
     {
-        public List<Flight> Flights { get; private set; } = new();
-        public Dictionary<string, string> Airports { get; private set; } = new();
-
-        public FlightManager()
+        public static void LoadFlights(List<Flight> flights)
         {
-            LoadFlights();
-            LoadAirports();
-        }
 
-        private void LoadFlights()
-        {
-            var assembly = typeof(FlightManager).Assembly;
-            var stream = assembly.GetManifestResourceStream("Assignment2OOP2.Resources.flights.csv");
-            if (stream == null) return; 
+            string exeDir = AppDomain.CurrentDomain.BaseDirectory;
+            string projectDir = Path.GetFullPath(Path.Combine(exeDir, "..", "..", ".."));
+            string filePath = Path.Combine(projectDir, "Resources", "Raw", "flights.csv");
 
-            using var reader = new StreamReader(stream);
-            while (!reader.EndOfStream)
+            if (File.Exists(filePath))
             {
-                var line = reader.ReadLine();
-                if (string.IsNullOrWhiteSpace(line)) continue;
-
-                var parts = line.Split(',');
-                if (parts.Length == 8)
+                foreach (string line in File.ReadLines(filePath))
                 {
-                    Flights.Add(new Flight
-                    {
-                        FlightCode = parts[0],
-                        Airline = parts[1],
-                        Origin = parts[2],
-                        Destination = parts[3],
-                        DayOfWeek = parts[4],
-                        DepartureTime = parts[5],
-                        SeatsAvailable = int.Parse(parts[6]),
-                        Cost = decimal.Parse(parts[7], CultureInfo.InvariantCulture)
-                    });
+                    string[] items = line.Split(',');
+                    string flightCode = items[0];
+                    string airline = items[1];
+                    string origin = items[2];
+                    string destination = items[3];
+                    string dayOfWeek = items[4];
+                    string departureTime = items[5];
+                    double seatsAvailable = double.Parse(items[6]);
+                    double cost = double.Parse(items[7]);
+                    Flight f = new Flight(flightCode, airline, origin, destination, dayOfWeek, departureTime, seatsAvailable, cost);
+                    flights.Add(f);
                 }
             }
         }
-
-        private void LoadAirports()
+        public static void LoadAirports(List<Airport> airports)
         {
-            var assembly = typeof(FlightManager).Assembly;
-            var stream = assembly.GetManifestResourceStream("Assignment2OOP2.Resources.airports.csv");
-            if (stream == null) return; 
+            string exeDir = AppDomain.CurrentDomain.BaseDirectory;
+            string projectDir = Path.GetFullPath(Path.Combine(exeDir, "..", "..", ".."));
+            string filePath = Path.Combine(projectDir, "Resources", "Raw", "airports.csv");
 
-            using var reader = new StreamReader(stream);
-            while (!reader.EndOfStream)
+            if (File.Exists(filePath))
             {
-                var line = reader.ReadLine();
-                if (string.IsNullOrWhiteSpace(line)) continue;
-
-                var parts = line.Split(',');
-                if (parts.Length == 2)
+                foreach (string line in File.ReadLines(filePath))
                 {
-                    Airports[parts[0]] = parts[1];
+                    string[] items = line.Split(",");
+                    string code = items[0];
+                    string name = items[1];
+                    Airport a = new Airport(code, name);
+                    airports.Add(a);
                 }
             }
         }
-
-        public List<Flight> FindFlights(string origin, string destination, string dayOfWeek)
-        {
-            return Flights
-                .Where(f =>
-                    (origin == "Any" || f.Origin == origin) &&
-                    (destination == "Any" || f.Destination == destination) &&
-                    (dayOfWeek == "Any" || f.DayOfWeek == dayOfWeek))
-                .ToList();
-        }
-
-        public string GetAirportName(string code) => Airports.GetValueOrDefault(code, code);
     }
 }
-
