@@ -16,7 +16,7 @@ namespace Assignment2OOP2
         private void LoadFlights()
         {
             var assembly = typeof(FlightManager).Assembly;
-            var resourceName = "Assignment2OOP2.Resources.flights.csv"; // Match your namespace
+            var resourceName = "Assignment2OOP2.Resources.flights.csv"; 
 
             using var stream = assembly.GetManifestResourceStream(resourceName);
             if (stream == null)
@@ -51,7 +51,7 @@ namespace Assignment2OOP2
         private void LoadAirports()
         {
             var assembly = typeof(FlightManager).Assembly;
-            var resourceName = "Assignment2OOP2.Resources.airports.csv"; // Match your namespace
+            var resourceName = "Assignment2OOP2.Resources.airports.csv";
 
             using var stream = assembly.GetManifestResourceStream(resourceName);
             if (stream == null)
