@@ -16,5 +16,8 @@ namespace Assignment2OOP2
             this.airportCode = airportCode;
             this.airportName = airportName;
         }
+
+        public string Code { get; internal set; }
+        public string Name { get; internal set; }
     }
 }
