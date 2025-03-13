@@ -12,7 +12,7 @@ namespace Assignment2OOP2
         public string FlightCode { get; set; }
         public string AirlineName { get; set; }
         public double Cost { get; set; }
-        public string Name { get; set; }
+        public string PassengerName { get; set; }
         public string Citizenship { get; set; }
         public string Status { get; set; }
 
@@ -22,7 +22,7 @@ namespace Assignment2OOP2
             this.FlightCode = FlightCode;
             this.AirlineName = AirlineName;
             this.Cost = Cost;
-            this.Name = Name;
+            this.PassengerName = Name;
             this.Citizenship = Citizenship;
             this.Status = Status;
         }
@@ -32,7 +32,7 @@ namespace Assignment2OOP2
                    $"2. Flight Code: {FlightCode}\n" +
                    $"3. Airline Name: {AirlineName}\n" +
                    $"4. Cost: {Cost}\n" +
-                   $"5. Client Name: {Name}\n" +
+                   $"5. Client Name: {PassengerName}\n" +
                    $"6. Citizenship: {Citizenship}\n" +
                    $"7. Status: {Status}";
         }
