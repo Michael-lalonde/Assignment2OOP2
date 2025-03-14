@@ -1,8 +1,100 @@
 ﻿@page "/reservations"
 
-<h1>Reservations</h1>
+<h2>Reservation Finder</h2>
+
+<form method="post" id="form1">
+	<label>Code: </label>
+	<input type="text" name="code" placeholder="Any" />
+	
+	<label>Airline: </label>
+	<input type="text" name="airline" placeholder="Any" />
+	
+	<label>Name: </label>
+	<input type="text" name="name" placeholder="Any" />
+	
+	<button type="submit">Find Reservations</button>
+</form>
+
+<h2>Reservations</h2>
+<form method="post" id="form2">
+	<input type="text" name="search" placeholder="Loading..." />
+</form>
+
+<h2>Reserve</h2>
+<form method="post" id="form3">
+	<label> Reservation Code: </label>
+	<input type="text" name="code" placeholder="Flight" /> 
+
+	<label>Flight Code: </label>
+	<input type="text" name="flightcode" placeholder="Airline" /> 
+
+	<label>Airline: </label>
+	<input type="text" name="airline" placeholder="Day" /> 
+
+	<label> Cost: </label>
+	<input type="text" name="cost" placeholder="Time" /> 
+
+	<label> Name: </label>
+	<input type="text" name="name" placeholder="0" /> 
+
+	<label>Citizenship: </label>
+	<input type="text" name="citizenship" placeholder="Name" /> 
+
+	<label>Status: </label>
+	<input type="text" name="status" placeholder="Active" /> 
+
+	<div class="row">
+		<button type="submit">Save</button>
+	</div>
+</form>
 
 
+<style>
+	
+	h2{
+		text-align: center;
+	}
+	
+	#form1 {
+		width: 150px;
+	}
+
+	#form2 input{
+		width: 100%;
+		padding: 5px;
+		margin-bottom: 65px;
+		border: 1px solid #ccc;
+		border-radius: 3px;
+	}
+
+	#form3 label {
+		display: block;
+		margin-top: 5px;
+	}
+
+	#form3 input {
+		width: 100%;
+		padding: 5px;
+		margin-bottom: 5px;
+		border: 1px solid #ccc;
+		border-radius: 3px;
+	}
+
+	.row{
+		display: flex;
+		justify-content: center;
+		padding-bottom: 10px;
+	}
+
+	#form3 button {
+		background-color: blue; 
+		color: white;
+		width: 30%;
+		border: none;
+		border-radius: 5px;
+	}
+
+</style>
 
 @code {
 
