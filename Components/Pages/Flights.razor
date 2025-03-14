@@ -15,19 +15,12 @@
 <button type="button" @onclick="SearchFlights">Find Flights</button>
 
 <h2>Flights</h2>
-@if (flights.Count > 0)
-{
-        <ul>
-        @foreach (var flight in flights)
-        {
-                <li>@flight.FlightCode - @flight.Airline - @flight.DepartureTime</li>
-        }
-        </ul>
-}
-else
-{
-            <p>No flights found. Try different search criteria.</p>
-}
+<ul>
+    @foreach (Flight flight in flights)
+    {
+        <li>@flight.FlightCode - @flight.Airline - @flight.DepartureTime</li>
+    }
+</ul>
 
 
 @code {
@@ -35,16 +28,17 @@ else
     private string to = "";
     private string day = "";
     private List<Flight> flights = new List<Flight>();
+    private List<Flight> foundFlights = new List<Flight>();
 
     void SearchFlights()
     {
         Console.WriteLine($"Searching for flights from: {from}, to: {to}, on: {day}");
 
-        // Call the DataManager to get flights
-        flights = DataManager.FindFlights(from, to, day);
+        Functionality.LoadFlights(flights);
+        foundFlights = DataManager.FindFlights(from, to, day);
 
         // Log the number of flights found
-        Console.WriteLine($"Found {flights.Count} flights.");
+        Console.WriteLine($"Found {foundFlights.Count} flights.");
     }
 }
 
