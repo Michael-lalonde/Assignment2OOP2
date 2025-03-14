@@ -25,11 +25,15 @@
 </div>
 
 <div class="form-group">
+    <label>Day</label>
     <select class="form-select">
-        <label>Day</label>
         <option value="Any">Any</option>
-         </select>
-    </div>
+        @foreach (var day in daysOfWeek.Days)
+        {
+            <option value="@day">@day</option>
+        }
+    </select>
+</div>
 
 <button class="btn btn-primary" @onclick="SearchFlight">Search</button>
 
@@ -61,7 +65,7 @@ else if (!string.IsNullOrEmpty(SearchedTerm))
 }
 
 @code {
-   
+    private DaysOfWeek daysOfWeek = new DaysOfWeek();
     private string SelectedOrigin = "Any";
     private string SelectedDestination = "Any";
     private string SelectedDay = "Any";
