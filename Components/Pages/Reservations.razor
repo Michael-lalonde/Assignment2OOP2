@@ -4,14 +4,14 @@
 
 <form method="post" id="form1" class="inline-form">
 	<label>Code: </label>
-	<input type="text" name="code" placeholder="Any" />
-	
+	<input type="text" @bind="code" name="code" placeholder="Any" />
+
 	<label>Airline: </label>
-	<input type="text" name="airline" placeholder="Any" />
-	
+	<input type="text" @bind="airline" name="airline" placeholder="Any" />
+
 	<label>Name: </label>
-	<input type="text" name="name" placeholder="Any" />
-	
+	<input type="text" @bind="name" name="name" placeholder="Any" />
+
 	<button type="submit">Find Reservations</button>
 </form>
 
@@ -50,13 +50,13 @@
 
 
 <style>
-	
+
 	h2{
-		text-align: center;
+	text-align: center;
 	}
-	
+
 	#form1{
-		width: 150px;
+	width: 150px;
 	}
 
 	.inline-form {
@@ -64,42 +64,45 @@
 	}
 
 	#form2 input{
-		width: 100%;
-		padding: 5px;
-		margin-bottom: 65px;
-		border: 1px solid #ccc;
-		border-radius: 3px;
+	width: 100%;
+	padding: 5px;
+	margin-bottom: 65px;
+	border: 1px solid white;
+	border-radius: 3px;
 	}
 
 	#form3 label {
-		display: block;
-		margin-top: 5px;
+	display: block;
+	margin-top: 5px;
 	}
 
 	#form3 input {
-		width: 100%;
-		padding: 5px;
-		margin-bottom: 5px;
-		border: 1px solid #ccc;
-		border-radius: 3px;
+	width: 100%;
+	padding: 5px;
+	margin-bottom: 5px;
+	border: 1px solid white;
+	border-radius: 3px;
 	}
 
 	.row{
-		display: flex;
-		justify-content: center;
-		padding-bottom: 10px;
+	display: flex;
+	justify-content: center;
+	padding-bottom: 10px;
 	}
 
 	#form3 button {
-		background-color: blue; 
-		color: white;
-		width: 30%;
-		border: none;
-		border-radius: 5px;
+	background-color: blue; 
+	color: white;
+	width: 30%;
+	border: none;
+	border-radius: 5px;
 	}
 
 </style>
 
 @code {
+	private string code = "";
+	private string airline = "";
+	private string name = "";
 
 }
