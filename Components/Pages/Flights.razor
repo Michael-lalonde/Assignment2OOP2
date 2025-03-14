@@ -1,108 +1,50 @@
 ﻿@page "/flights"
+@inject DataManager DataManager
 
+<h2>Flight Finder</h2>
 
-<h1>Flight Finder</h1>
+<label>From: </label>
+<input type="text" @bind="from" placeholder="Enter Origin" />
 
-<div class="form-group">
-    <label>From:</label>
-    <select class="form-select" @bind="SelectedOrigin">
-        <option value="Any">Any</option>
-        @foreach (var airport in Airports)
-        {
-            <option value="@airport.Code">@airport.Name</option>
-        }
-    </select>
-</div>
+<label>To: </label>
+<input type="text" @bind="to" placeholder="Enter Destination" />
 
-<div class="form-group">
-    <label>To:</label>
-    <select class="form-select" @bind="SelectedDestination">
-        <option value="Any">Any</option>
-        @foreach (var airport in Airports)
-        {
-            <option value="@airport.Code">@airport.Name</option>
-        }
-    </select>
-</div>
+<label>Day: </label>
+<input type="text" @bind="day" placeholder="Enter Day" />
 
-<div class="form-group">
-    <label>Day</label>
-    <select class="form-select">
-        <option value="Any">Any</option>
-        @foreach (var day in daysOfWeek.Days)
-        {
-            <option value="@day">@day</option>
-        }
-    </select>
-</div>
+<button type="button" @onclick="SearchFlights">Find Flights</button>
 
-<button class="btn btn-primary" @onclick="SearchFlight">Find Flights</button>
-
-@if (IsLoading)
+<h2>Flights</h2>
+@if (flights.Count > 0)
 {
-    <p>Loading...</p>
-}
-else if (MatchingFlights.Any())
-{
-    <h2>Results</h2>
-    <ul class="list-group">
-        @foreach (var flight in MatchingFlights)
+        <ul>
+        @foreach (var flight in flights)
         {
-            <li class="list-group-item">
-                <strong>@flight.FlightCode</strong> - @flight.Airline
-                <br />
-                @GetAirportName(flight.Origin) → @GetAirportName(flight.Destination)
-                <br />
-                @flight.DayOfWeek at @flight.DepartureTime
-                <br />
-                Seats: @flight.SeatsAvailable | Cost: @flight.Cost.ToString("C")
-            </li>
+                <li>@flight.FlightCode - @flight.Airline - @flight.DepartureTime</li>
         }
-    </ul>
+        </ul>
 }
-else if (!string.IsNullOrEmpty(SearchedTerm))
+else
 {
-    <p>No flights found.</p>
+            <p>No flights found. Try different search criteria.</p>
 }
+
 
 @code {
-    private DaysOfWeek daysOfWeek = new DaysOfWeek();
-    private string SelectedOrigin = "Any";
-    private string SelectedDestination = "Any";
-    private string SelectedDay = "Any";
-    private List<Flight> MatchingFlights = new();
-    private bool IsLoading = false;
-    private string SearchedTerm = "";
+    private string from = "";
+    private string to = "";
+    private string day = "";
+    private List<Flight> flights = new List<Flight>();
 
- 
-    private List<Airport> Airports = new();
-    private List<Flight> Flight = new();
-
-    protected override void OnInitialized()
+    void SearchFlights()
     {
-        
-        Assignment2OOP2.Functionality.LoadAirports(Airports);
-        Assignment2OOP2.Functionality.LoadFlights(Flight);
-    }
+        Console.WriteLine($"Searching for flights from: {from}, to: {to}, on: {day}");
 
-    
-    private async Task SearchFlight()
-    {
-        IsLoading = true;
-        SearchedTerm = $"{SelectedOrigin}-{SelectedDestination}-{SelectedDay}";
+        // Call the DataManager to get flights
+        flights = DataManager.FindFlights(from, to, day);
 
-        MatchingFlights = Flight.Where(f =>
-            (SelectedOrigin == "Any" || f.Origin == SelectedOrigin) &&
-            (SelectedDestination == "Any" || f.Destination == SelectedDestination) &&
-            (SelectedDay == "Any" || f.DayOfWeek == SelectedDay)
-        ).ToList();
-
-        IsLoading = false;
-    }
-
-    private string GetAirportName(string code)
-    {
-        var airport = Airports.FirstOrDefault(a => a.Code == code);
-        return airport != null ? airport.Name : "Unknown";
+        // Log the number of flights found
+        Console.WriteLine($"Found {flights.Count} flights.");
     }
 }
+

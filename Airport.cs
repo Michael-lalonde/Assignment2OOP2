@@ -8,16 +8,19 @@ namespace Assignment2OOP2
 {
     public class Airport
     {
-        public string airportCode;
-        public string airportName;
+
+        //private data
+        private string? airportCode;
+        private string? airportName;
+
+        //public data
+        public string? AirportCode { get { return airportCode; } set { airportCode = value; } }
+        public string? AirportName { get { return airportName; } set { airportName = value; } }
 
         public Airport(string airportCode, string airportName)
         {
             this.airportCode = airportCode;
             this.airportName = airportName;
         }
-
-        public string Code { get; internal set; }
-        public string Name { get; internal set; }
     }
 }

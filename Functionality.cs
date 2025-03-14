@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Assignment2OOP2
 {
@@ -10,7 +9,6 @@ namespace Assignment2OOP2
     {
         public static void LoadFlights(List<Flight> flights)
         {
-
             string exeDir = AppDomain.CurrentDomain.BaseDirectory;
             string projectDir = Path.GetFullPath(Path.Combine(exeDir, "..", "..", ".."));
             string filePath = Path.Combine(projectDir, "Resources", "Raw", "flights.csv");
@@ -20,19 +18,15 @@ namespace Assignment2OOP2
                 foreach (string line in File.ReadLines(filePath))
                 {
                     string[] items = line.Split(',');
-                    string flightCode = items[0];
-                    string airline = items[1];
-                    string origin = items[2];
-                    string destination = items[3];
-                    string dayOfWeek = items[4];
-                    string departureTime = items[5];
-                    double seatsAvailable = double.Parse(items[6]);
-                    double cost = double.Parse(items[7]);
-                    Flight f = new Flight(flightCode, airline, origin, destination, dayOfWeek, departureTime, seatsAvailable, cost);
+                    Flight f = new Flight(
+                        items[0], items[1], items[2], items[3],
+                        items[4], items[5], double.Parse(items[6]), double.Parse(items[7])
+                    );
                     flights.Add(f);
                 }
             }
         }
+
         public static void LoadAirports(List<Airport> airports)
         {
             string exeDir = AppDomain.CurrentDomain.BaseDirectory;
@@ -44,19 +38,9 @@ namespace Assignment2OOP2
                 foreach (string line in File.ReadLines(filePath))
                 {
                     string[] items = line.Split(",");
-                    string code = items[0];
-                    string name = items[1];
-                    Airport a = new Airport(code, name);
-                    airports.Add(a);
+                    airports.Add(new Airport(items[0], items[1]));
                 }
             }
-        }
-        
-        public static void MakeReservation(List<Reservation> reservations)
-        {
-            Console.WriteLine("Choose a flight to reserve");
-            string name = Console.ReadLine();
-            Console.WriteLine("");
         }
     }
 }

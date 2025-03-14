@@ -33,7 +33,7 @@ namespace Assignment2OOP2
                 else if (selection == "7")
                 {
                     Console.WriteLine("Please enter new client status: ");
-                    string newClientStatus = Console.ReadLine();
+                    bool newClientStatus = bool.Parse(Console.ReadLine());
                     reservation.Status = newClientStatus;
                 }
             }
