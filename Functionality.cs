@@ -51,5 +51,12 @@ namespace Assignment2OOP2
                 }
             }
         }
+        
+        public static void MakeReservation(List<Reservation> reservations)
+        {
+            Console.WriteLine("Choose a flight to reserve");
+            string name = Console.ReadLine();
+            Console.WriteLine("");
+        }
     }
 }

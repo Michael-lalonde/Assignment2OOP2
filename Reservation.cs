@@ -14,9 +14,9 @@ namespace Assignment2OOP2
         public double Cost { get; set; }
         public string PassengerName { get; set; }
         public string Citizenship { get; set; }
-        public string Status { get; set; }
+        public bool Status { get; set; }
 
-        public Reservation(string ReservationCode, string FlightCode, string AirlineName, double Cost, string PassengerName, string Citizenship, string Status)
+        public Reservation(string ReservationCode, string FlightCode, string AirlineName, double Cost, string PassengerName, string Citizenship, bool Status)
         {
             this.ReservationCode = ReservationCode;
             this.FlightCode = FlightCode;
