@@ -1,73 +1,264 @@
-﻿@page "/flights"
-@inject DataManager DataManager
+﻿@*
+    ---------------------------------------------------------------------------------------
+    GROUP 3 - OOP-2
+    Name: Paolo Bermudez | Romer John De Lina | Jonathan Buccat | Jeffry Ancheta
+    Date: March 17, 2024
+    Code Version 2.0
+    ---------------------------------------------------------------------------------------
+    Program Description:
+    This Blazor application is designed to manage and display flight and reservation information for a fictional airline booking system.
+    It provides functionalities to search for flights based on departure and arrival airports, day of the week, and to reserve seats on selected flights.
+    Additionally, it allows users to search for reservations using a reservation code, airline, or traveler's name.
+
+    Inputs:
+    - Departure Airport: The airport from which the flight departs.
+    - Arrival Airport: The airport at which the flight arrives.
+    - Day: The day of the week on which the flight operates.
+    - Reservation Code: A unique code identifying a reservation.
+    - Airline: The name of the airline operating the flight.
+    - Traveler's Name: The name of the traveler who has made the reservation.
+
+    Outputs:
+    - List of matching flights based on search criteria.
+    - Details of selected flight including flight code, airline, day, time, and cost per seat.
+    - List of matching reservations based on search criteria.
+    - Details of selected reservation including reservation code, flight code, airline, and traveler's name.
+
+    Features:
+    - Flight Finder: Search functionality to find flights based on specific criteria.
+    - Flight Selection: Ability to select a flight from search results and view its details.
+    - Reservation Maker: Form to enter traveler's information and reserve seats on a selected flight.
+    - Reservation Finder: Search functionality to find reservations based on specific criteria.
+    - Reservation Selection: Ability to select a reservation from search results and view its details.
+
+    ---------------------------------------------------------------------------------------
+*@
+
+@page "/flights"
 
 <h2>Flight Finder</h2>
 
-<label>From: </label>
-<input type="text" @bind="from" placeholder="Enter Origin" />
+<div class="form-group">
+    <label>From: </label>
+    <input type="text" @bind="from" placeholder="Enter Origin" class="full-width-input" />
 
-<label>To: </label>
-<input type="text" @bind="to" placeholder="Enter Destination" />
+    <label>To: </label>
+    <input type="text" @bind="to" placeholder="Enter Destination" class="full-width-input" />
 
-<label>Day: </label>
-<input type="text" @bind="day" placeholder="Enter Day" />
+    <label>Day: </label>
+    <input type="text" @bind="day" placeholder="Enter Day" class="full-width-input" />
 
-<button type="button" @onclick="SearchFlights">Find Flights</button>
+    <button type="button" @onclick="SearchFlights">Find Flights</button>
+</div>
 
 <h2>Flights</h2>
 
-@if (foundFlights.Count > 0)
+@if (flights.Count > 0)
 {
-        <ul>
-        @foreach (var flight in foundFlights)
+    <ul>
+        @foreach (var flight in flights)
         {
-                    <li>@flight.FlightCode - @flight.Airline - @flight.DepartureTime</li>
+            <li>@flight.FlightCode - @flight.Airline - @flight.DepartureTime</li>
         }
-        </ul>
+    </ul>
 }
 else
 {
-        <p>No flights found. Try different search criteria.</p>
+    <p>No flights found. Try different search criteria.</p>
+}
+
+<h2>Reservation Details Input</h2>
+
+<div class="flight-details-input">
+    <label>Reservation Code: </label>
+    <input type="text" @bind="reservationCode" placeholder="Enter Reservation Code" class="full-width-input" />
+
+    <label>Flight Code: </label>
+    <input type="text" @bind="flightCode" placeholder="Enter Flight Code" class="full-width-input" />
+
+    <label>Airline: </label>
+    <input type="text" @bind="airlineName" placeholder="Enter Airline Name" class="full-width-input" />
+
+    <label>Cost: </label>
+    <input type="number" @bind="cost" placeholder="Enter Cost" class="full-width-input" />
+
+    <label>Passenger Name: </label>
+    <input type="text" @bind="passengerName" placeholder="Enter Passenger Name" class="full-width-input" />
+
+    <label>Citizenship: </label>
+    <input type="text" @bind="citizenship" placeholder="Enter Citizenship" class="full-width-input" />
+
+    <label>Time: </label>
+    <input type="text" @bind="status" placeholder="hour, minute, 00:00" class="full-width-input" />
+
+    <button type="button" @onclick="SubmitReservation">Submit Reservation</button>
+</div>
+
+<h2>Reservations</h2>
+
+@if (reservations.Count > 0)
+{
+    <ul>
+        @foreach (var reservation in reservations)
+        {
+            <li>
+                @reservation.ReservationCode - @reservation.FlightCode - @reservation.AirlineName - @reservation.PassengerName
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No reservations found.</p>
 }
 
 @code {
     private string from = "";
     private string to = "";
     private string day = "";
+    private string reservationCode = "";
+    private string flightCode = "";
+    private string airlineName = "";
+    private double cost = 0;
+    private string passengerName = "";
+    private string citizenship = "";
+    private string status = "";
+
     private List<Flight> flights = new List<Flight>();
-    private List<Flight> foundFlights = new List<Flight>();
+    private List<Reservation> reservations = new List<Reservation>();
 
     protected override void OnInitialized()
     {
-        // Load the flight data only once when the page is initialized
-        Functionality.LoadFlights(flights);
-
-        // Log the number of flights loaded to the console
-        Console.WriteLine($"Loaded {flights.Count} flights.");
-
-        // Just in case, check if some flights are actually loaded
-        if (flights.Count == 0)
-        {
-            Console.WriteLine("No flights loaded.");
-        }
+        LoadReservations();
     }
 
     void SearchFlights()
     {
-        // Log the search criteria
-        Console.WriteLine($"Searching for flights from: {from}, to: {to}, on: {day}");
+        flights = DataManager.FindFlights(from, to, day);
+    }
 
-        // Filter the flights based on the user input
-        foundFlights = flights.Where(f =>
-            (string.IsNullOrEmpty(from) || f.Origin.Contains(from, StringComparison.OrdinalIgnoreCase)) &&
-            (string.IsNullOrEmpty(to) || f.Destination.Contains(to, StringComparison.OrdinalIgnoreCase)) &&
-            (string.IsNullOrEmpty(day) || f.DayOfWeek.Contains(day, StringComparison.OrdinalIgnoreCase))
-        ).ToList();
+    void SubmitReservation()
+    {
+        try
+        {
+            bool parsedStatus = bool.TryParse(status, out bool isActive) ? isActive : false;
 
-        // Log the number of flights found
-        Console.WriteLine($"Found {foundFlights.Count} flights.");
+            Reservation newReservation = new Reservation(
+                reservationCode,
+                flightCode,
+                airlineName,
+                cost,
+                passengerName,
+                citizenship,
+                parsedStatus
+            );
 
-        // Force UI update (This should trigger a UI re-render)
-        StateHasChanged();
+            reservations.Add(newReservation);
+            SaveReservationToCSV(newReservation);
+            ClearReservationInputs();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error submitting reservation: {ex.Message}");
+        }
+    }
+
+    private void SaveReservationToCSV(Reservation reservation)
+    {
+        try
+        {
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "res.csv");
+
+            using (StreamWriter writer = new StreamWriter(filePath, true))
+            {
+                writer.WriteLine($"{reservation.ReservationCode},{reservation.FlightCode},{reservation.AirlineName},{reservation.Cost},{reservation.PassengerName},{reservation.Citizenship},{reservation.Status}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error saving reservation to CSV: {ex.Message}");
+        }
+    }
+
+    private void LoadReservations()
+    {
+        try
+        {
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "res.csv");
+
+            if (File.Exists(filePath))
+            {
+                var lines = File.ReadAllLines(filePath);
+                foreach (var line in lines)
+                {
+                    var values = line.Split(',');
+                    if (values.Length == 7)
+                    {
+                        var reservation = new Reservation(
+                            values[0],
+                            values[1],
+                            values[2],
+                            double.Parse(values[3]),
+                            values[4],
+                            values[5],
+                            bool.Parse(values[6])
+                        );
+                        reservations.Add(reservation);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading reservations: {ex.Message}");
+        }
+    }
+
+    private void ClearReservationInputs()
+    {
+        reservationCode = "";
+        flightCode = "";
+        airlineName = "";
+        cost = 0;
+        passengerName = "";
+        citizenship = "";
+        status = "";
     }
 }
+<style> 
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+h2 {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+.form-group, .flight-details-input {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    max-width: 500px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin: 10px 0 5px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    marg
+
+</style>
