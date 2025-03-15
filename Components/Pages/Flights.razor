@@ -1,26 +1,4 @@
-﻿@*
-Group 5 - OOP-2 
-
-Students: Michael Lalonde, Noah Mcclay, Cale Ryden, Cole Andrews
-Date: 2025-03-14
-   
--------------------------------------------------------------------
-
-Page Name: Flights.razor
-
-Program Description: This is a Blazor application designed to allow users to manage flights and reservations. 
-Whether that be searching for flights, booking flights, or viewing reservations.
-It provides user-friendly functionality to search for flights based on departure and arrival airports.
-
-
-
-
-
-*@
-
-
-
-@page "/flights"
+﻿@page "/flights"
 @inject DataManager DataManager
 
 <h2>Flight Finder</h2>
@@ -37,13 +15,20 @@ It provides user-friendly functionality to search for flights based on departure
 <button type="button" @onclick="SearchFlights">Find Flights</button>
 
 <h2>Flights</h2>
-<ul>
-    @foreach (Flight flight in flights)
-    {
-        <li>@flight.FlightCode - @flight.Airline - @flight.DepartureTime</li>
-    }
-</ul>
 
+@if (foundFlights.Count > 0)
+{
+    <ul>
+        @foreach (var flight in foundFlights)
+        {
+            <li>@flight.FlightCode - @flight.Airline - @flight.DepartureTime</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No flights found. Try different search criteria.</p>
+}
 
 @code {
     private string from = "";
@@ -52,15 +37,37 @@ It provides user-friendly functionality to search for flights based on departure
     private List<Flight> flights = new List<Flight>();
     private List<Flight> foundFlights = new List<Flight>();
 
+    protected override void OnInitialized()
+    {
+        // Load the flight data only once when the page is initialized
+        Functionality.LoadFlights(flights);
+
+        // Log the number of flights loaded to the console
+        Console.WriteLine($"Loaded {flights.Count} flights.");
+
+        // Just in case, check if some flights are actually loaded
+        if (flights.Count == 0)
+        {
+            Console.WriteLine("No flights loaded.");
+        }
+    }
+
     void SearchFlights()
     {
+        // Log the search criteria
         Console.WriteLine($"Searching for flights from: {from}, to: {to}, on: {day}");
 
-        Functionality.LoadFlights(flights);
-        foundFlights = DataManager.FindFlights(from, to, day);
+        // Filter the flights based on the user input
+        foundFlights = flights.Where(f =>
+            (string.IsNullOrEmpty(from) || f.Origin.Contains(from, StringComparison.OrdinalIgnoreCase)) &&
+            (string.IsNullOrEmpty(to) || f.Destination.Contains(to, StringComparison.OrdinalIgnoreCase)) &&
+            (string.IsNullOrEmpty(day) || f.DayOfWeek.Contains(day, StringComparison.OrdinalIgnoreCase))
+        ).ToList();
 
         // Log the number of flights found
         Console.WriteLine($"Found {foundFlights.Count} flights.");
+
+        // Force UI update (This should trigger a UI re-render)
+        StateHasChanged();
     }
 }
-

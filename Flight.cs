@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Assignment2OOP2
 {
     public class Flight
     {
-        //private data
+        // private data
         private string? flightCode;
         private string? airline;
         private string? origin;
@@ -18,7 +14,7 @@ namespace Assignment2OOP2
         private double seatsAvailable;
         private double cost;
 
-        //public data
+        // public data
         public string? FlightCode { get { return flightCode; } set { flightCode = value; } }
         public string? Airline { get { return airline; } set { airline = value; } }
         public string? Origin { get { return origin; } set { origin = value; } }
