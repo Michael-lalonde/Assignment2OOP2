@@ -18,22 +18,23 @@
 
 @if (foundFlights.Count > 0)
 {
-    <ul>
+        <ul>
         @foreach (var flight in foundFlights)
         {
-            <li>@flight.FlightCode - @flight.Airline - @flight.DepartureTime</li>
+                    <li>@flight.FlightCode - @flight.Airline - @flight.DepartureTime</li>
         }
-    </ul>
+        </ul>
 }
 else
 {
-    <p>No flights found. Try different search criteria.</p>
+        <p>No flights found. Try different search criteria.</p>
 }
 
 @code {
     private string from = "";
     private string to = "";
     private string day = "";
+    private List<Flight> flights = new List<Flight>();
     private List<Flight> foundFlights = new List<Flight>();
 
     protected override void OnInitialized()
@@ -63,6 +64,7 @@ else
             (string.IsNullOrEmpty(day) || f.DayOfWeek.Contains(day, StringComparison.OrdinalIgnoreCase))
         ).ToList();
 
+        // Log the number of flights found
         Console.WriteLine($"Found {foundFlights.Count} flights.");
 
         // Force UI update (This should trigger a UI re-render)
