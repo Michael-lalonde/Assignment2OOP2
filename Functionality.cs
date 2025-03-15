@@ -11,7 +11,7 @@ namespace Assignment2OOP2
         {
             string exeDir = AppDomain.CurrentDomain.BaseDirectory;
             string projectDir = Path.GetFullPath(Path.Combine(exeDir, "..", "..", ".."));
-            string filePath = Path.Combine(projectDir, "Resources", "Raw", "flights.csv");
+            // The file is in the same directory as the project, so we don't need extra folder traversal
 
             if (File.Exists(filePath))
             {
