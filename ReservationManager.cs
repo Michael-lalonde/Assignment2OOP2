@@ -67,7 +67,7 @@ namespace Assignment2OOP2
                 .ToList();
         }
 
-        // Update Reservation
+        
         public void UpdateReservation(string reservationCode, string passengerName, string citizenship, bool status)
         {
             var reservation = reservations.FirstOrDefault(r => r.ReservationCode == reservationCode);
@@ -84,10 +84,8 @@ namespace Assignment2OOP2
             reservation.Citizenship = citizenship;
             reservation.Status = status;
 
-            Persist(); // Save changes to file
+            Persist(); 
         }
-
-        // Delete Reservation (Soft Delete)
         public void DeleteReservation(string reservationCode)
         {
             var reservation = reservations.FirstOrDefault(r => r.ReservationCode == reservationCode);
@@ -102,7 +100,6 @@ namespace Assignment2OOP2
        
         private void Persist()
         {
-            // Ensure Resources directory exists
             string directory = Path.GetDirectoryName(FILE_NAME);
             if (!Directory.Exists(directory))
             {
@@ -125,8 +122,6 @@ namespace Assignment2OOP2
                 }
             }
         }
-
-        // Load Reservations from CSV File
         private void LoadReservations()
         {
             if (!File.Exists(FILE_NAME))
@@ -134,7 +129,7 @@ namespace Assignment2OOP2
 
             using (StreamReader reader = new StreamReader(FILE_NAME))
             {
-                reader.ReadLine(); // Skip header row
+                reader.ReadLine();
 
                 while (!reader.EndOfStream)
                 {

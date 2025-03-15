@@ -11,7 +11,7 @@ namespace Assignment2OOP2
         public DataManager()
         {
             _flights = new List<Flight>();
-            Functionality.LoadFlights(_flights); // Load flights initially
+            Functionality.LoadFlights(_flights); 
         }
 
         public List<Flight> FindFlights(string from, string to, string day)
