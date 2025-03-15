@@ -7,7 +7,7 @@ using Assignment2OOP2.Components.Pages;
 
 namespace Assignment2OOP2
 {
-    class DataManager
+    public class DataManager
     {
         private List<Flight> flights = new List<Flight>();
         private List<Airport> airports = new List<Airport>();
@@ -33,9 +33,5 @@ namespace Assignment2OOP2
             Console.WriteLine($"Found {foundFlights.Count} flights.");
             return foundFlights;
         }
-
-
-
-
     }
 }
